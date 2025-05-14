@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     Rigidbody2D rbody;
     float axisH = 0.0f;     //입력
+    Animator animator;      //애니메이터 추가
 
     public float speed = 3.0f;      //이동 속도
     public float jump = 9.0f;       //점프 강도
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         rbody = this.GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -36,6 +38,10 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
+
+        //Animator 값 전달
+        animator.SetBool("isMove", axisH != 0);
+        animator.SetBool("isJump", !onGround);
     }
     private void FixedUpdate()
     {
@@ -64,5 +70,15 @@ public class PlayerController : MonoBehaviour
     {
         goJump = true;
         Debug.Log("점프 키 눌림");
+    }
+
+    public void Goal()
+    {
+        animator.SetBool("isGoal", true);
+    }
+
+    public void GameOver()
+    {
+        animator.SetBool("isOver", true);
     }
 }
