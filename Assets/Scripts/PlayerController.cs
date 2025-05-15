@@ -13,15 +13,24 @@ public class PlayerController : MonoBehaviour
     bool goJump = false;            //플레이어가 점프 중인지
     bool onGround = false;          //플레이어가 지면에 있는지
 
+    //플레이어의 상태 추가
+    public static string gameState = "playing"; //게임 중 상태
+
+
     //----------------- 초기화 ---------------------
     void Awake()
     {
         rbody = this.GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        gameState = "playing";
     }
 
     void Update()
     {
+        //플레이어가 오버, 클리어 등 움직일 수 없는 상태이면 Update 종료
+        if (gameState != "playing")
+            return;
+
         axisH = Input.GetAxisRaw("Horizontal"); //수평 입력 확인
 
         if (axisH > 0.0f)
@@ -45,6 +54,10 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        //플레이어가 오버, 클리어 등 움직일 수 없는 상태이면 Update 종료
+        if (gameState != "playing")
+            return;
+
         //착지 판정
         //플레이어와 지면이 접촉하는지 LineCast로 확인
         onGround = Physics2D.Linecast(transform.position, transform.position - (transform.up * 0.1f), groundLayer);
@@ -65,11 +78,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //------------------- 플레이어 접촉 상호작용 (클리어, 데드)
+    //------------------- 플레이어 접촉 상호작용 (클리어, 데드) -----------------
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //플레이어가 골에 닿았을 때
         if (collision.gameObject.tag == "Goal")
             Goal();
+        //플레이어가 적 오브젝트나 떨어졌을 때
         else if (collision.gameObject.tag == "Dead")
             GameOver();
     }
@@ -84,10 +99,18 @@ public class PlayerController : MonoBehaviour
     public void Goal()
     {
         animator.SetBool("isGoal", true);
+        gameState = "gameclear";
+        Debug.Log("플레이어 상태 : gameclear");
     }
 
     public void GameOver()
     {
         animator.SetBool("isOver", true);
+        gameState = "gameover";
+        Debug.Log("플레이어 상태 : gameover");
+
+        //게임 오버 연출
+        GetComponent<CapsuleCollider2D>().enabled = false;      //플레이어 충돌 비활성
+        rbody.AddForce(new Vector2(0, 3), ForceMode2D.Impulse); //플레이어 튀어오르는 연출     
     }
 }
