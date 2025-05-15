@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetBool("isGoal", true);
         gameState = "gameclear";
-        GameOver();
+        GameStop();
         Debug.Log("플레이어 상태 : gameclear");
     }
 
@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetBool("isOver", true);
         gameState = "gameover";
-        GameOver();
+        GameStop();
         Debug.Log("플레이어 상태 : gameover");
 
         //게임 오버 연출
