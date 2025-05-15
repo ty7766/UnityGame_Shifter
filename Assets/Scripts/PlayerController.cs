@@ -100,6 +100,7 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetBool("isGoal", true);
         gameState = "gameclear";
+        GameOver();
         Debug.Log("플레이어 상태 : gameclear");
     }
 
@@ -107,10 +108,18 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetBool("isOver", true);
         gameState = "gameover";
+        GameOver();
         Debug.Log("플레이어 상태 : gameover");
 
         //게임 오버 연출
         GetComponent<CapsuleCollider2D>().enabled = false;      //플레이어 충돌 비활성
         rbody.AddForce(new Vector2(0, 3), ForceMode2D.Impulse); //플레이어 튀어오르는 연출     
+    }
+
+    private void GameStop()
+    {
+        //플레이어의 속도를 0으로 하기
+        Rigidbody2D rbody = GetComponent<Rigidbody2D>();
+        rbody.linearVelocity = new Vector2(0,0);
     }
 }
