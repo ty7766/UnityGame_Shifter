@@ -2,11 +2,10 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public float speed = 3.0f;          //적 이동 속도
+    public float speed = 2.0f;          //적 이동 속도
     public string direction = "left";   //적 이동 방향
     public float range = 0.0f;          //적 이동 범위
     Vector3 defPos;                     //적 시작 위치
-    Vector3 enemyScale;                 //적 크기
 
     void Start()
     {
@@ -43,11 +42,11 @@ public class EnemyController : MonoBehaviour
 
         if (direction == "left")
         {
-            rbody.linearVelocity = new Vector2(speed,rbody.linearVelocity.y);
+            rbody.linearVelocity = new Vector2(-speed,rbody.linearVelocity.y);
         }
         else
         {
-            rbody.linearVelocity = new Vector2(-speed, rbody.linearVelocity.y);
+            rbody.linearVelocity = new Vector2(speed, rbody.linearVelocity.y);
         }
     }
 
@@ -70,7 +69,7 @@ public class EnemyController : MonoBehaviour
     //-------------- 적 방향 전환 --------------------
     void SetDirection(string direction)
     {
-        enemyScale = transform.localScale;
+        Vector3 enemyScale = transform.localScale;
 
         if (direction == "left")
         {

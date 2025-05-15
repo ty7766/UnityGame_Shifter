@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8086654758850392234}
   - component: {fileID: 2586684220268873912}
   - component: {fileID: 6031569112389595226}
+  - component: {fileID: -2461968116143658367}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Dead
@@ -222,3 +223,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &-2461968116143658367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894216745202506506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c543d36e7af9a7247872c4c7de8c5674, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  direction: left
+  range: 3
