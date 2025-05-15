@@ -64,7 +64,16 @@ public class PlayerController : MonoBehaviour
             goJump = false;
         }
     }
-    
+
+    //------------------- 플레이어 접촉 상호작용 (클리어, 데드)
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Goal")
+            Goal();
+        else if (collision.gameObject.tag == "Dead")
+            GameOver();
+    }
+
     //------------------- 점프 켜기 --------------------
     public void Jump()
     {
