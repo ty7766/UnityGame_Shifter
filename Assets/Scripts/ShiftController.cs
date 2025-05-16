@@ -2,20 +2,19 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Unity.Burst.CompilerServices;
 
 //배경 전환 버튼 관리와 쿨타임 관리
 //BackController와 연결
 public class ShiftController : MonoBehaviour
 {
-    public float maxCooldownTime = 5.0f;                   //스킬 쿨타임
+    public float maxCooldownTime = 2.0f;                   //스킬 쿨타임
     public TextMeshProUGUI textCooldownTime;        //스킬 쿨타임 텍스트
     public Image imageCooldownTime;                 //스킬 쿨타임 이미지
-
     public BackController backController;
 
     private float currentCooldownTime;              //현재 스킬 쿨타임
     private bool isCooldown;
+    private Coroutine cooldownCoroutine;            //코루틴 중복 방지용
 
     //쿨타임 초기화
     private void Awake()
@@ -34,27 +33,29 @@ public class ShiftController : MonoBehaviour
     //쿨타임중이면 버튼 입력 무시, 쿨타임이 없으면 스킬 실행
     public void UseShift()
     {
-        if (isCooldown == true)
+        if (isCooldown)
         {
             return;
         }
-        if (backController !=  null)
-        {
-            backController.CycleBackGround();
-        }
 
-        StartCoroutine(nameof(OnCooldownTime), maxCooldownTime);
+        //배경 전환 실행
+        backController?.CycleBackGround();
+
+        // 기존 코루틴이 돌고 있으면 멈추고 다시 시작
+        if (cooldownCoroutine != null)
+            StopCoroutine(cooldownCoroutine);
+
+        cooldownCoroutine = StartCoroutine(OnCooldownTime());
     }
 
     //스킬이 사용되면 max쿨타임으로 초기화
     //time만큼 스킬 쿨타임이 줄어들면서 curr쿨타임이 0이되면 스킬 다시 활성화
-    private IEnumerator OnCooldownTime(float maxCooldownTime)
+    private IEnumerator OnCooldownTime()
     {
         currentCooldownTime = maxCooldownTime;
-
         SetCooldownIs(true);
 
-        while ( currentCooldownTime > 0)
+        while ( currentCooldownTime > 0.0f)
         {
             currentCooldownTime -= Time.deltaTime;
             imageCooldownTime.fillAmount = currentCooldownTime / maxCooldownTime;
@@ -64,6 +65,7 @@ public class ShiftController : MonoBehaviour
         }
 
         SetCooldownIs(false);
+        cooldownCoroutine = null;
     }
 
     private void SetCooldownIs(bool b)
