@@ -225,6 +225,7 @@ GameObject:
   - component: {fileID: 7592928332438924661}
   - component: {fileID: 4200112676065916266}
   - component: {fileID: 6686793747320402773}
+  - component: {fileID: -3320799369340086680}
   m_Layer: 5
   m_Name: ShiftButton
   m_TagString: Untagged
@@ -335,3 +336,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &-3320799369340086680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8644581431161464791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd3402fb134a70645ad4b2852746fcda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxCooldownTime: 5
+  textCooldownTime: {fileID: 0}
+  imageCooldownTime: {fileID: 0}
