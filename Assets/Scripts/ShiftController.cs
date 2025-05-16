@@ -14,7 +14,6 @@ public class ShiftController : MonoBehaviour
 
     private float currentCooldownTime;              //현재 스킬 쿨타임
     private bool isCooldown;
-    private Coroutine cooldownCoroutine;            //코루틴 중복 방지용
 
     //쿨타임 초기화
     private void Awake()
@@ -37,25 +36,23 @@ public class ShiftController : MonoBehaviour
         {
             return;
         }
+        if (backController !=  null)
+        {
+            backController.CycleBackGround();
+        }
 
-        //배경 전환 실행
-        backController?.CycleBackGround();
-
-        // 기존 코루틴이 돌고 있으면 멈추고 다시 시작
-        if (cooldownCoroutine != null)
-            StopCoroutine(cooldownCoroutine);
-
-        cooldownCoroutine = StartCoroutine(OnCooldownTime());
+        StartCoroutine(nameof(OnCooldownTime), maxCooldownTime);
     }
 
     //스킬이 사용되면 max쿨타임으로 초기화
     //time만큼 스킬 쿨타임이 줄어들면서 curr쿨타임이 0이되면 스킬 다시 활성화
-    private IEnumerator OnCooldownTime()
+    private IEnumerator OnCooldownTime(float maxCooldownTime)
     {
         currentCooldownTime = maxCooldownTime;
+
         SetCooldownIs(true);
 
-        while ( currentCooldownTime > 0.0f)
+        while ( currentCooldownTime > 0)
         {
             currentCooldownTime -= Time.deltaTime;
             imageCooldownTime.fillAmount = currentCooldownTime / maxCooldownTime;
@@ -65,7 +62,6 @@ public class ShiftController : MonoBehaviour
         }
 
         SetCooldownIs(false);
-        cooldownCoroutine = null;
     }
 
     private void SetCooldownIs(bool b)
