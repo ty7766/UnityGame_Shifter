@@ -12,6 +12,7 @@ public class ShiftController : MonoBehaviour
 
     [Header("이펙트 관리")]
     public float colorTime = 0.5f;
+    public Image imageScreen;
 
     [Header("연결 스크립트")]
     public BackController backController;
@@ -41,6 +42,10 @@ public class ShiftController : MonoBehaviour
         if (coolDownCoroutine != null)
             StopCoroutine(coolDownCoroutine);
         coolDownCoroutine = StartCoroutine(OnCooldownTime());
+
+        //이펙트 실행
+        StopCoroutine("HitAlphaAnimation");
+        StartCoroutine("HitAlphaAnimation");
 
         // 배경 전환 (다음 배경 반환받음)
         GameObject newBack = backController.CycleBackGround();
@@ -116,5 +121,22 @@ public class ShiftController : MonoBehaviour
         }
 
         renderer.material.color = targetColor;
+    }
+
+    //배경 전환 이펙트
+    private IEnumerator HitAlphaAnimation()
+    {
+        Color color = imageScreen.color;
+        color.a = 0.2f;
+        imageScreen.color = color;
+
+        //투명도를 0까지 감소시키기
+        while(color.a >= 0.0f)
+        {
+            color.a -= Time.deltaTime;
+            imageScreen.color = color;
+
+            yield return null;
+        }
     }
 }
