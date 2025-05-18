@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [Header("Time UI")]
     public GameObject timeBar;          //시간 표시 이미지
     public GameObject timeText;         //시간 표시 텍스트
-    public TimeController timeController;
+    TimeController timeController;
 
     private Image titleImage;                   //Title 이미지
 
