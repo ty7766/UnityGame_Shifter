@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
                 {
                     //진행중인 time을 가져와 텍스트로 출력
                     int time = (int)timeController.displayTime;
-                    timeText.GetComponent<Text>().text = time.ToString();
+                    timeText.GetComponent<TextMeshProUGUI>().text = time.ToString();
 
                     //만약 time이 0이면 게임 오버 상태로 변경
                     if (time <= 0)
