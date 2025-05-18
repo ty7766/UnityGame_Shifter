@@ -1,114 +1,59 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class MovingBlock : MonoBehaviour
 {
-    public float moveX = 0.0f;      //ºí·Ï XÃà ÀÌµ¿ °Å¸®
-    public float moveY = 0.0f;      //ºí·Ï YÃà ÀÌµ¿ °Å¸®
-    public float times = 0.0f;      //½Ã°£
-    public float weight = 0.0f;     //Á¤Áö ½Ã°£
-    public bool isMoveWhenOn = false;   //ÇÃ·¹ÀÌ¾î°¡ ¿Ã¶ó°¬À» ¶§ ÀÛµ¿½ÃÅ³°ÍÀÎÁö
+    public float speed = 2.0f;          // ë¸”ë¡ ì´ë™ ì†ë„
+    public float range = 4.0f;          // ë¸”ë¡ ì´ë™ ë²”ìœ„
+    public string direction = "right";  // ì´ë™ ë°©í–¥
 
-    public bool isCanMove;          //¿òÁ÷ÀÓ
+    private Vector3 defPos;             // ì‹œì‘ ìœ„ì¹˜
+    private GameObject playerOnTop;     // ì˜¬ë¼ì˜¨ í”Œë ˆì´ì–´ ì°¸ì¡°
 
-    float perDX;                    //1ÇÁ·¹ÀÓ´ç ºí·Ï XÃà ÀÌµ¿ °ª
-    float perDY;                    //1ÇÁ·¹ÀÓ´ç ºí·Ï YÃà ÀÌµ¿ °ª
-
-    Vector3 defPos;                 //ºí·Ï ÃÊ±â À§Ä¡
-    bool isReverse = false;         //¹İÀü ¿©ºÎ
-
-
-    //------------------- ÃÊ±âÈ­ --------------------
-    private void Start()
+    void Start()
     {
         defPos = transform.position;
-        float timestep = Time.fixedDeltaTime;
-        perDX = moveX / (1.0f / timestep * times);
-        perDY = moveY / (1.0f / timestep * times);
-
-        if (isMoveWhenOn)
-            isCanMove = true;
+        transform.localScale = new Vector3(0.8f, 0.8f, 1f); // ë¸”ë¡ í¬ê¸° ê³ ì •
     }
 
-    private void FixedUpdate()
+    void Update()
     {
-        //ÀÌµ¿ ÁßÀÌ¸é end ºñÈ°¼ºÈ­ÇÏ°í °è¼Ó ÀÚ±â ÀÚ½ÅÀÇ À§Ä¡ ¾÷µ¥ÀÌÆ®
-        if(isCanMove)
+        // ì´ë™ ë°©í–¥ ë°˜ì „
+        if (transform.position.x < defPos.x - (range / 2))
         {
-            float x = transform.position.x;
-            float y = transform.position.y;
-            bool endX = false;
-            bool endY = false;
+            direction = "right";
+        }
+        if (transform.position.x > defPos.x + (range / 2))
+        {
+            direction = "left";
+        }
 
-            if(isReverse)
-            {
-                //ÀÌµ¿·®ÀÌ + ÀÌ°í ÀÌµ¿ À§Ä¡°¡ ÃÊ±â À§Ä¡º¸´Ù ÀÛ°Å³ª ÀÌµ¿·®ÀÌ - ÀÌ°í ÀÌµ¿À§Ä¡°¡ ÃÊ±â À§Ä¡º¸´Ù Å©¸é
-                //¹İ´ë¹æÇâÀ¸·Î ÀÌµ¿½ÃÅ°±â
-                if((perDX >= 0.0f && x <= defPos.x) || (perDX < 0.0f && x >= defPos.x))
-                    endX = true;
+        // ì´ë™
+        Vector3 move = (direction == "right" ? Vector3.right : Vector3.left) * speed * Time.deltaTime;
+        transform.position += move;
 
-                if((perDY >= 0.0f && y <= defPos.y) || (perDY < 0.0f &&  y >= defPos.y))
-                    endY = true;
-
-                //ºí·Ï ÀÌµ¿½ÃÅ°±â
-                transform.Translate(new Vector3(-perDX, -perDY, defPos.z));        
-            }
-            else
-            {
-                //ÀÌµ¿·®ÀÌ +ÀÌ°í ÀÌµ¿ À§Ä¡°¡ ÃÊ±â À§Ä¡º¸´Ù Å©°Å³ª ÀÌµ¿·®ÀÌ - ÀÌ°í ÀÌµ¿À§Ä¡°¡ ÃÊ±âÀ§Ä¡º¸´Ù ÀÛÀ¸¸é
-                //Á¤¹æÇâÀ¸·Î ÀÌµ¿½ÃÅ°±â
-                if ((perDX >= 0.0f && x >= defPos.x + moveX) || (perDX < 0.0f && x <= defPos.x + moveX))
-                    endX = true;
-                
-                if ((perDY >= 0.0f && y >=defPos.y + moveY) || (perDY < 0.0f && y <= defPos.y + moveY))
-                    endY = true;
-
-                //ºí·Ï ÀÌµ¿½ÃÅ°±â
-                Vector3 v = new Vector3(perDY, perDX, defPos.z);
-                transform.Translate(v);
-            }
-
-            //ÀÌµ¿ ºí·ÏÀÌ À§Ä¡ ¸ñÇ¥¿¡ ´Ù´Ù¸£¸é
-            if (endX &&  endY)
-            {
-                //À§Ä¡ ¾î±ß³² ¹æÁö
-                if (isReverse)
-                    transform.position = defPos;
-            }
-
-            isReverse = !isReverse;     //°ª ¹İÀü
-            isCanMove = false;          //ÀÌµ¿ °¡´É °ªÀ» false
-            //¿Ã¶ó°¬À» ¶§ ¿òÁ÷ÀÓ °ªÀÌ ²¨Áø °æ¿ì weight¸¸Å­ Áö¿¬ ÈÄ ´Ù½Ã ÀÌµ¿
-            if (isMoveWhenOn == false)
-                Invoke("Move", weight);
+        // í”Œë ˆì´ì–´ë„ í•¨ê»˜ ì´ë™
+        if (playerOnTop != null)
+        {
+            playerOnTop.transform.position += move;
         }
     }
 
-    public void Move()
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        isCanMove = true;
-    }
-
-    public void Stop()
-    {
-        isCanMove = false;
-    }
-
-    //--------------- ÇÃ·¹ÀÌ¾î - ºí·Ï Á¢ÃË -------------------
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag("Player"))
         {
-            //¸¸¾à ÇÃ·¹ÀÌ¾î°¡ Å¾½ÂÇÏ¸é ÀÌµ¿ºí·ÏÀÇ ÀÚ½ÄÀ¸·Î ¸¸µé¾î ÇÔ²² ÀÌµ¿½ÃÅ°±â
-            collision.transform.SetParent(transform);
-            if (isMoveWhenOn)
-                isCanMove = true;
+            playerOnTop = collision.gameObject;
+
+            // í”Œë ˆì´ì–´ í¬ê¸° ê°•ì œ ê³ ì •
+            playerOnTop.transform.localScale = new Vector3(0.8f, 0.8f, 1f);
         }
     }
 
-    //----------------- ÇÃ·¹ÀÌ¾î - ºí·Ï Á¢ÃË ÇØÁ¦ --------------------
-    private void OnCollisionExit2D(Collision2D collision)
+    void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Playeer")
-            collision.transform.SetParent(null);
+        if (collision.gameObject == playerOnTop)
+        {
+            playerOnTop = null;
+        }
     }
 }
