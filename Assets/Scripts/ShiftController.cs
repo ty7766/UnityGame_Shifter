@@ -21,6 +21,7 @@ public class ShiftController : MonoBehaviour
     private bool isCooldown;
     private Coroutine coolDownCoroutine;
 
+    //--------------- 초기화 -----------------
     private void Awake()
     {
         SetCooldownIs(false);
@@ -28,12 +29,14 @@ public class ShiftController : MonoBehaviour
 
     private void Update()
     {
+        //R키를 누르면 발동
         if (Input.GetKeyDown(KeyCode.R))
         {
             UseShift();
         }
     }
 
+    //------------------ 배경 전환 메소드 -------------------
     public void UseShift()
     {
         if (isCooldown)
@@ -43,7 +46,7 @@ public class ShiftController : MonoBehaviour
             StopCoroutine(coolDownCoroutine);
         coolDownCoroutine = StartCoroutine(OnCooldownTime());
 
-        //이펙트 실행
+        //전환 이펙트 실행
         StopCoroutine("HitAlphaAnimation");
         StartCoroutine("HitAlphaAnimation");
 
@@ -54,6 +57,7 @@ public class ShiftController : MonoBehaviour
         StartCoroutine(FadeSceneColor(newBack));
     }
 
+    //----------------- 스킬 쿨타임 관리 ----------------------
     private IEnumerator OnCooldownTime()
     {
         currentCooldownTime = maxCooldownTime;
@@ -100,6 +104,10 @@ public class ShiftController : MonoBehaviour
         GameObject[] targetsEnemy = GameObject.FindGameObjectsWithTag("Dead");
         foreach (var obj in targetsEnemy)
             StartCoroutine(LerpColor(obj, targetColor, colorTime));
+
+        //Grass
+        GameObject targetGrass = GameObject.FindGameObjectWithTag("Grass");
+        StartCoroutine(LerpColor(targetGrass, targetColor, colorTime));
 
         yield return null;
     }
