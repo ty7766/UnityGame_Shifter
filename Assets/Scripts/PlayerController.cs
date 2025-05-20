@@ -3,19 +3,21 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    Rigidbody2D rbody;
-    float axisH = 0.0f;     //입력
-    Animator animator;      //애니메이터 추가
-
+    [Header("플레이어 이동")]
     public float speed = 3.0f;      //이동 속도
     public float jump = 9.0f;       //점프 강도
-    public LayerMask groundLayer;   //착지 가능 레이어
-    
-    bool goJump = false;            //플레이어가 점프 중인지
-    bool onGround = false;          //플레이어가 지면에 있는지
 
+    [Header("플레이어 상호작용")]
+    public LayerMask groundLayer;               //착지 가능 레이어
     //플레이어의 상태 추가
     public static string gameState = "playing"; //게임 중 상태
+    public int score = 0;                       //획득 점수
+
+    bool goJump = false;            //플레이어가 점프 중인지
+    bool onGround = false;          //플레이어가 지면에 있는지
+    Rigidbody2D rbody;
+    float axisH = 0.0f;             //입력
+    Animator animator;              //애니메이터 추가
 
 
     //----------------- 초기화 ---------------------
@@ -26,6 +28,7 @@ public class PlayerController : MonoBehaviour
         gameState = "playing";
     }
 
+    //---------------- 플레이어 이동 --------------------
     void Update()
     {
         //플레이어가 오버, 클리어 등 움직일 수 없는 상태이면 Update 종료
@@ -53,6 +56,8 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isMove", axisH != 0);
         animator.SetBool("isJump", !onGround);
     }
+
+    //--------------------- 플레이어 접촉 상호작용 (지면) ---------------------
     private void FixedUpdate()
     {
         //플레이어가 오버, 클리어 등 움직일 수 없는 상태이면 Update 종료
@@ -79,15 +84,25 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //------------------- 플레이어 접촉 상호작용 (클리어, 데드) -----------------
+    //------------------- 플레이어 접촉 상호작용 (클리어, 데드, 점수) -----------------
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //플레이어가 골에 닿았을 때
         if (collision.gameObject.tag == "Goal")
             Goal();
+
         //플레이어가 적 오브젝트나 떨어졌을 때
         else if (collision.gameObject.tag == "Dead")
             GameOver();
+
+        //플레이어가 점수 아이템에 닿았을 때 점수 획득
+        else if (collision.gameObject.tag == "ScoreItem")
+        {
+            //ItemScore에서 점수 오브젝트 가져오고 플레이어와 닿으면 삭제
+            ItemData itemScore = collision.gameObject.GetComponent<ItemData>();
+            score = itemScore.value;
+            Destroy(collision.gameObject);
+        }
     }
 
     //------------------- 점프 켜기 --------------------
