@@ -4,6 +4,7 @@ using UnityEngine;
 //멈춰도 애니메이션이 작동하는 문제
 //속도가 바로 멈춰야함
 //밤이 되었을 때 Enemy의 태그가 Ground로 바뀌게 해줬으면...
+
 public class EnemyController : MonoBehaviour
 {
     [Header("적 관련")]
@@ -26,12 +27,25 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        //배경이 밤일 때 적 오브젝트 정지
+        //배경이 노을일 때 적 오브젝트 정지
         if (shiftController != null)
         {
             string back = shiftController.GetCurrentBackName();
-            isStopped = (back == "back_night");
+            isStopped = (back == "back_sunset");
         }
+
+        //배경이 노을일 때 태그를 Ground로 바꾸어 플레이어가 밟아도 Dead 적용이 안되게 구현
+        if (isStopped && tag != "Ground")
+            tag = "Ground";
+        else if (!isStopped && tag != "Dead")
+            tag = "Dead";
+
+        //배경이 노을일 때 오브젝트 정지 -> 오브젝트 정지일때 애니메이션 정지
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+            animator.SetBool("IsMoving", !isStopped);
+
+
         // 예를 들어 범위가 8이면 시작위치에서 왼쪽으로 4만큼, 오른쪽으로 4만큼 이동할 수 있음
         // 즉 위치가 range/2를 넘어가면 범위 끝에 도달했으므로 반대방향으로 전환시킴
         if (!isStopped && range > 0.0f)
@@ -52,19 +66,24 @@ public class EnemyController : MonoBehaviour
     //------------------- 적 속도 갱신 -----------------------
     void FixedUpdate()
     {
-        //배경이 night일때 적 멈춤
-        if (isStopped) return;
 
         //속도 갱신
         Rigidbody2D rbody = GetComponent<Rigidbody2D>();
 
+        //배경이 night일때 적 즉시 멈추기
+        if (isStopped)
+        {
+            rbody.linearVelocityX = 0;
+            return;
+        }
+
         if (direction == "left")
         {
-            rbody.linearVelocity = new Vector2(-speed,rbody.linearVelocity.y);
+            rbody.linearVelocityX = -speed;
         }
         else
         {
-            rbody.linearVelocity = new Vector2(speed, rbody.linearVelocity.y);
+            rbody.linearVelocityX = speed;
         }
     }
 
