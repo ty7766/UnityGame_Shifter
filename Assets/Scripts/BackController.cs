@@ -46,4 +46,6 @@ public class BackController : MonoBehaviour
     {
         return backGroundPrefab[currentIndex].name;
     }
+
+
 }

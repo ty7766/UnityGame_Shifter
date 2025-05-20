@@ -1,11 +1,20 @@
 using UnityEngine;
 
+
+//멈춰도 애니메이션이 작동하는 문제
+//속도가 바로 멈춰야함
+//밤이 되었을 때 Enemy의 태그가 Ground로 바뀌게 해줬으면...
 public class EnemyController : MonoBehaviour
 {
+    [Header("적 관련")]
     public float speed = 2.0f;          //적 이동 속도
     public string direction = "left";   //적 이동 방향
     public float range = 0.0f;          //적 이동 범위
+    public bool isStopped = false;      //적의 이동 유무
     Vector3 defPos;                     //적 시작 위치
+
+    [Header("연결 스크립트")]
+    public ShiftController shiftController;     //배경 색상에 따른 적 제어
 
     void Start()
     {
@@ -17,9 +26,15 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
+        //배경이 밤일 때 적 오브젝트 정지
+        if (shiftController != null)
+        {
+            string back = shiftController.GetCurrentBackName();
+            isStopped = (back == "back_night");
+        }
         // 예를 들어 범위가 8이면 시작위치에서 왼쪽으로 4만큼, 오른쪽으로 4만큼 이동할 수 있음
         // 즉 위치가 range/2를 넘어가면 범위 끝에 도달했으므로 반대방향으로 전환시킴
-        if (range > 0.0f)
+        if (!isStopped && range > 0.0f)
         {
             if (transform.position.x < defPos.x - (range/2))
             {
@@ -34,9 +49,12 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    //------------------- 적 속도 갱신 ------------------------------
+    //------------------- 적 속도 갱신 -----------------------
     void FixedUpdate()
     {
+        //배경이 night일때 적 멈춤
+        if (isStopped) return;
+
         //속도 갱신
         Rigidbody2D rbody = GetComponent<Rigidbody2D>();
 

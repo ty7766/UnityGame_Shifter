@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Runtime.CompilerServices;
 
 public class ShiftController : MonoBehaviour
 {
@@ -112,6 +113,7 @@ public class ShiftController : MonoBehaviour
         yield return null;
     }
 
+    //해당 오브젝트를 해당 색상으로 원하는 시간에 걸쳐 변환시키기
     private IEnumerator LerpColor(GameObject obj, Color targetColor, float duration)
     {
         Renderer renderer = obj.GetComponent<Renderer>();
@@ -146,5 +148,10 @@ public class ShiftController : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public string GetCurrentBackName()
+    {
+        return backController.GetCurrentBackName();
     }
 }
