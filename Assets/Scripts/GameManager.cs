@@ -132,6 +132,6 @@ public class GameManager : MonoBehaviour
     void UpdateScore()
     {
         int score = stageScore + totalScore;
-        scoreText.GetComponent<Text>().text = score.ToString();
+        scoreText.GetComponent<TextMeshProUGUI>().text = score.ToString();
     }
 }
