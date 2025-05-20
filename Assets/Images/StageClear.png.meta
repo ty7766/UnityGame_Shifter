@@ -145,12 +145,12 @@ TextureImporter:
       name: StageClear_0
       rect:
         serializedVersion: 2
-        x: 12
+        x: 13
         y: 13
-        width: 348
+        width: 772
         height: 121
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -163,33 +163,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: StageClear_1
-      rect:
-        serializedVersion: 2
-        x: 377
-        y: 13
-        width: 407
-        height: 121
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c634157658fd65b40800000000000000
-      internalID: 5428772164898734956
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: cf4b9de404e97ad46add924da88dc5a8
     internalID: 0
     vertices: []
     indices: 
@@ -198,7 +176,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      StageClear_0: -4379676439449696492
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
