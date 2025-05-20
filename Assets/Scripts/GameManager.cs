@@ -17,11 +17,16 @@ public class GameManager : MonoBehaviour
     public GameObject timeText;         //시간 표시 텍스트
     TimeController timeController;
 
+    [Header("Score UI")]
+    public GameObject scoreText;        //점수 표시 텍스트
+    public static int totalScore;       //총합 점수(static)
+    public int stageScore;              //스테이지 점수
+
     private Image titleImage;                   //Title 이미지
 
     void Start()
     {
-        //UI 숨기기
+        //UI Controll
         Invoke("InactiveImage", 1.0f);
         panel.SetActive(false);
 
@@ -31,6 +36,9 @@ public class GameManager : MonoBehaviour
         if (timeController != null)
             if (timeController.maxTime == 0.0f)
                 timeBar.SetActive(false);
+
+        //Score Controll
+        UpdateScore();
     }
 
     //게임 클리어한 경우 클리어 UI 보여줌, 상태 업데이트, 시간 초기화
@@ -49,9 +57,20 @@ public class GameManager : MonoBehaviour
             mainImage.GetComponent<Image>().sprite = gameClearSpr;
             PlayerController.gameState = "gameend";
 
-            //TimeControll
+            //시간 멈추기 & 남은 시간 점수 합
             if (timeController != null)
+            {
                 timeController.isTimeOver = true;
+
+                //스테이지 점수 갱신(시간)
+                int time = (int)timeController.displayTime;
+                totalScore += time * 10;
+            }
+
+            //스테이지 점수 갱신(보석)
+            totalScore += stageScore;       //한 프레임에만 점수 갱신
+            stageScore = 0;                 //다음 프레임에 stageScore = 0으로 만들어 점수가 중복 누적되지 않게 함
+            UpdateScore();
         }
 
         //플레이어가 게임 오버 한 경우
@@ -91,6 +110,14 @@ public class GameManager : MonoBehaviour
                     if (time <= 0)
                         playerController.GameOver();
                 }
+
+            //점수 추가
+            if (playerController.score != 0)
+            {
+                stageScore += playerController.score;
+                playerController.score = 0;
+                UpdateScore();
+            }
         }
 
     }
@@ -99,5 +126,12 @@ public class GameManager : MonoBehaviour
     void InactiveImage()
     {
         mainImage.SetActive(false);
+    }
+
+    //UI에 점수 갱신
+    void UpdateScore()
+    {
+        int score = stageScore + totalScore;
+        scoreText.GetComponent<Text>().text = score.ToString();
     }
 }
