@@ -30,7 +30,7 @@ public class ShiftController : MonoBehaviour
 
     private void Update()
     {
-        //R키를 누르면 발동
+        //R키를 누르면 배경 전환
         if (Input.GetKeyDown(KeyCode.R))
         {
             UseShift();
