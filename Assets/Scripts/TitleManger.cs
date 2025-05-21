@@ -8,11 +8,6 @@ public class TitleManger : MonoBehaviour
     public GameObject exitButton;       //게임 나가기 버튼
     bool isTutorialActive = false;
 
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {

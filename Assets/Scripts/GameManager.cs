@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEditor.Search;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,6 +22,12 @@ public class GameManager : MonoBehaviour
     public GameObject scoreText;        //점수 표시 텍스트
     public static int totalScore;       //총합 점수(static)
     public int stageScore;              //스테이지 점수
+
+    [Header("Pause UI")]
+    public GameObject pauseImage;    //게임 방법 이미지
+    public GameObject returnButton;  //return 버튼
+    public GameObject exitButton;    //게임 나가기 버튼
+    bool isPauseActive = false;
 
     void Start()
     {
@@ -44,6 +51,15 @@ public class GameManager : MonoBehaviour
     //플레이어 각 상태를 추가하여 상태에 따른 메소드 적용
     void Update()
     {
+        //플레이어가 Pause화면에서 ESC를 눌렀을 때 닫기
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPauseActive)
+                ClosePauseImage();
+            else
+                ShowPauseImage();
+        }
+
         //플레이어가 게임을 클리어한 경우
         if (PlayerController.gameState == "gameclear")
         {
@@ -131,5 +147,33 @@ public class GameManager : MonoBehaviour
     {
         int score = stageScore + totalScore;
         scoreText.GetComponent<TextMeshProUGUI>().text = score.ToString();
+    }
+
+    //PauseImage 보여주기
+    public void ShowPauseImage()
+    {
+        Debug.Log("튜토리얼 열림");
+        if (pauseImage != null)
+        {
+            pauseImage.SetActive(true);
+            isPauseActive = true;
+        }
+    }
+
+    //Pause 화면에서 ESC 누르면 나가기
+    void ClosePauseImage()
+    {
+        if (pauseImage != null)
+        {
+            pauseImage.SetActive(false);
+            isPauseActive = false;
+        }
+    }
+
+    //"게임 종료" 버튼을 눌렀을 때 나가기
+    public void ExitGame()
+    {
+        Debug.Log("게임 종료");
+        Application.Quit();
     }
 }
