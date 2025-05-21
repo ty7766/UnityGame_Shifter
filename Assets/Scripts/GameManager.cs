@@ -22,11 +22,9 @@ public class GameManager : MonoBehaviour
     public static int totalScore;       //총합 점수(static)
     public int stageScore;              //스테이지 점수
 
-    private Image titleImage;                   //Title 이미지
-
     void Start()
     {
-        //UI Controll
+        //Game UI Controll
         Invoke("InactiveImage", 1.0f);
         panel.SetActive(false);
 
