@@ -3,7 +3,7 @@ using UnityEngine;
 public class CannonController : MonoBehaviour
 {
     public GameObject shell;             //포탄 Prefab
-    public float delayTime;              //발사 지연 시간
+    public float delayTime = 3.0f;              //발사 지연 시간
     public float fireSpeedX = -4.0f;     //발사 속도
     public float length = 8.0f;          //발사 거리
 
