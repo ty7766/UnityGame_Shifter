@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: be0daead96346fd409308a3929cd383f
+guid: f581e0ef4f8acec49a3fb7ea29318bd6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2836554479157175418
-    second: spring_0
+      213: -5333349321414413341
+    second: cannon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: spring_0
+      name: cannon_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 1
-        width: 593
-        height: 594
+        x: 0
+        y: 0
+        width: 211
+        height: 109
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a74e43425477d5720800000000000000
-      internalID: 2836554479157175418
+      spriteID: 3e3f50aac032cf5b0800000000000000
+      internalID: -5333349321414413341
       vertices: []
       indices: 
       edges: []
