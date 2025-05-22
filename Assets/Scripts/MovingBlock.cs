@@ -10,6 +10,9 @@ public class MovingBlock : MonoBehaviour
     private Vector3 defPos;             // 시작 위치
     private GameObject playerOnTop;     // 올라온 플레이어 참조
 
+    private SpriteRenderer spriteRenderer;      //블록 색상
+    private Collider2D colliderBlock;           //블록 상호작용
+
     [Header("연결 스크립트")]
     public ShiftController shiftController;     //배경 색상에 따른 블록 제어
     
@@ -20,15 +23,34 @@ public class MovingBlock : MonoBehaviour
         defPos = transform.position;
         //크기 초기화
         transform.localScale = new Vector3(0.8f, 0.8f, 1f); // 블록 크기 고정
+        //블록 상태 초기화
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        colliderBlock = GetComponent<Collider2D>();
     }
 
     void Update()
     {
-        //배경이 노을일 때 블록 정지
         if (shiftController != null)
         {
+            //배경 받기
             string back = shiftController.GetCurrentBackName();
-            isStopped = (back == "back_sunset");
+
+            //배경이 "노을"이면 블록 멈춤
+            if (back == "back_sunset")
+                isStopped = true;
+
+            //배경이 "밤"이면 블록 상호작용 해제 & 투명화
+            else if (back == "back_night")
+            {
+                spriteRenderer.enabled = false;
+                colliderBlock.enabled = false;
+            }
+            else
+            {
+                spriteRenderer.enabled = true;
+                colliderBlock.enabled = true; 
+            }
+
         }
 
         if (isStopped)
