@@ -6,8 +6,6 @@ public class GB_SUNSET : MonoBehaviour
     private Collider2D blockCollider;
     public ShiftController shiftController;
 
-    private readonly string targetBack = "back_sunset";
-
     void Start()
     {
         blockRenderer = GetComponent<Renderer>();
@@ -19,7 +17,7 @@ public class GB_SUNSET : MonoBehaviour
         if (shiftController == null) return;
 
         string currentBack = shiftController.GetCurrentBackName();
-        bool isActive = (currentBack == targetBack);
+        bool isActive = (currentBack == "back_sunset");
 
         if (blockRenderer != null)
         {

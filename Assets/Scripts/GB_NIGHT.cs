@@ -5,9 +5,6 @@ public class GB_NIGHT : MonoBehaviour
     private Renderer blockRenderer;
     private Collider2D blockCollider;
     public ShiftController shiftController;
-
-    private readonly string targetBack = "back_night";
-
     void Start()
     {
         blockRenderer = GetComponent<Renderer>();
@@ -19,7 +16,7 @@ public class GB_NIGHT : MonoBehaviour
         if (shiftController == null) return;
 
         string currentBack = shiftController.GetCurrentBackName();
-        bool isActive = (currentBack == targetBack);
+        bool isActive = (currentBack == "back_night");
 
         if (blockRenderer != null)
         {

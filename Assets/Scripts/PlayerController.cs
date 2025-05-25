@@ -3,27 +3,28 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("플레이어 이동")]
-    public float speed = 3.0f;      //이동 속도
-    public float jump = 9.0f;       //점프 강도
+    [Header("Player Move")]
+    public float speed = 3.0f;                   //이동 속도
+    public float jump = 9.0f;                    //점프 강도
 
-    [Header("플레이어 상호작용")]
-    public LayerMask groundLayer;               //착지 가능 레이어
+    [Header("Player Interact")]
+    public LayerMask groundLayer;                //착지 가능 레이어
     //플레이어의 상태 추가
-    public static string gameState = "playing"; //게임 중 상태
-    public int score = 0;                       //획득 점수
+    public static string gameState = "playing";  //게임 중 상태
+    public int score = 0;                        //획득 점수
 
-    bool goJump = false;            //플레이어가 점프 중인지
-    bool onGround = false;          //플레이어가 지면에 있는지
+    bool goJump = false;                         //플레이어가 점프 중인지
+    bool onGround = false;                       //플레이어가 지면에 있는지
+    float axisH = 0.0f;                          //입력
+
+    Animator animator;
     Rigidbody2D rbody;
-    float axisH = 0.0f;             //입력
-    Animator animator;              //애니메이터 추가
 
 
     //----------------- 초기화 ---------------------
     void Awake()
     {
-        rbody = this.GetComponent<Rigidbody2D>();
+        rbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         gameState = "playing";
     }
@@ -48,9 +49,7 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(-0.8f, 0.8f, 0);
         }
         if (Input.GetButtonDown("Jump"))
-        {
-            Jump();
-        }
+            goJump = true;
 
         //Animator 값 전달
         animator.SetBool("isMove", axisH != 0);
@@ -64,7 +63,6 @@ public class PlayerController : MonoBehaviour
         if (gameState != "playing")
             return;
 
-        //착지 판정
         //플레이어와 지면이 접촉하는지 LineCast로 확인
         onGround = Physics2D.Linecast(transform.position, transform.position - (transform.up * 0.1f), groundLayer);
 
@@ -72,7 +70,7 @@ public class PlayerController : MonoBehaviour
         if (onGround || axisH != 0)
         {
             //속도 갱신
-            rbody.linearVelocity = new Vector2(speed * axisH, rbody.linearVelocity.y);
+            rbody.linearVelocityX = speed * axisH;
         }
         //지면 위에서 점프키가 눌렸을 때
         if(onGround && goJump)
@@ -95,10 +93,10 @@ public class PlayerController : MonoBehaviour
         else if (collision.gameObject.tag == "Dead")
             GameOver();
 
-        //플레이어가 점수 아이템에 닿았을 때 점수 획득
+        //플레이어가 점수 아이템에 닿았을 때
         else if (collision.gameObject.tag == "ScoreItem")
         {
-            //ItemScore에서 점수 오브젝트 가져오고 플레이어와 닿으면 삭제
+            //점수 획득 및 삭제
             ItemData itemScore = collision.gameObject.GetComponent<ItemData>();
             score = itemScore.value;
             Destroy(collision.gameObject);
@@ -106,12 +104,6 @@ public class PlayerController : MonoBehaviour
     }
 
     //------------------- 점프 켜기 --------------------
-    public void Jump()
-    {
-        goJump = true;
-        Debug.Log("점프 키 눌림");
-    }
-
     public void Goal()
     {
         animator.SetBool("isGoal", true);

@@ -28,6 +28,11 @@ public class GameManager : MonoBehaviour
     public GameObject pauseImage;    //게임 방법 이미지
     public GameObject returnButton;  //return 버튼
     public GameObject exitButton;    //게임 나가기 버튼
+
+    [Header("Sounds")]
+    public AudioClip meGameOver;
+    public AudioClip meGameClear;
+
     bool isPauseActive = false;
 
     void Start()
@@ -42,14 +47,15 @@ public class GameManager : MonoBehaviour
         Invoke("InactiveImage", 1.0f);
         panel.SetActive(false);
 
-        //Time Control
+        //Time UI Control
         timeController = GetComponent<TimeController>();
+
         //시간 제한이 없는 경우 Time UI 숨김
         if (timeController != null)
             if (timeController.maxTime == 0.0f)
                 timeBar.SetActive(false);
 
-        //Score Controll
+        //Score Control
         UpdateScore();
     }
 
@@ -70,15 +76,24 @@ public class GameManager : MonoBehaviour
         //플레이어가 게임을 클리어한 경우
         if (PlayerController.gameState == "gameclear")
         {
-            mainImage.SetActive(true);      //UI 보이기
-            panel.SetActive(true);          //버튼 보이기
-
-            //RESTART 무효화?
-
+            //[1]. UI SetUp
+            mainImage.SetActive(true);
+            panel.SetActive(true);
             mainImage.GetComponent<Image>().sprite = gameClearSpr;
+
+            //[2]. State Update
             PlayerController.gameState = "gameend";
 
-            //시간 멈추기 & 남은 시간 점수 합
+            //[3]. Sounds
+            AudioSource soundPlayer = GetComponent<AudioSource>();
+            if (soundPlayer != null)
+            {
+                //배경 음악 정지하고 클리어 음악 재생
+                soundPlayer.Stop();
+                soundPlayer.PlayOneShot(meGameClear);
+            }
+
+            //[4]. 시간 멈추기 & 남은 시간 점수 합
             if (timeController != null)
             {
                 timeController.isTimeOver = true;
@@ -88,7 +103,7 @@ public class GameManager : MonoBehaviour
                 totalScore += time * 10;
             }
 
-            //스테이지 점수 갱신(보석)
+            //[5]. 스테이지 점수 갱신(보석)
             totalScore += stageScore;       //한 프레임에만 점수 갱신
             stageScore = 0;                 //다음 프레임에 stageScore = 0으로 만들어 점수가 중복 누적되지 않게 함
             UpdateScore();
@@ -97,17 +112,26 @@ public class GameManager : MonoBehaviour
         //플레이어가 게임 오버 한 경우
         else if (PlayerController.gameState == "gameover")
         {
-            mainImage.SetActive(true);      //UI 표시
-            panel.SetActive(true);          //버튼 보이기
+            //[1]. UI Setup
+            mainImage.SetActive(true);
+            panel.SetActive(true);
 
-            //NEXT 비활성
+            //[2]. NEXT 비활성
             Button button = nextButton.GetComponent<Button>();
             button.interactable = false;
 
+            //[3]. State Update
             mainImage.GetComponent<Image>().sprite = gameOverSpr;
             PlayerController.gameState = "gameend";
 
-            //TimeControll
+            //[4]. Sounds
+            AudioSource soundPlayer = GetComponent<AudioSource>();
+            if (soundPlayer != null)
+            {
+                soundPlayer.Stop();
+                soundPlayer.PlayOneShot(meGameOver);
+            }
+            //[5]. TimeControll Over
             if (timeController != null)
                 timeController.isTimeOver = true;
         }
@@ -156,7 +180,7 @@ public class GameManager : MonoBehaviour
         scoreText.GetComponent<TextMeshProUGUI>().text = score.ToString();
     }
 
-    //PauseImage 보여주기
+    //PauseImage 활성화
     public void ShowPauseImage()
     {
         Debug.Log("튜토리얼 열림");

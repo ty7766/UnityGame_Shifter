@@ -83,7 +83,7 @@ public class ShiftController : MonoBehaviour
         imageCooldownTime.enabled = b;
     }
 
-    // 씬 내 모든 오브젝트 + 배경 색상 서서히 전환
+    // 씬 내 모든 오브젝트 색상 전환
     private IEnumerator FadeSceneColor(GameObject newBack)
     {
         // 현재 배경 이름 확인
@@ -96,17 +96,17 @@ public class ShiftController : MonoBehaviour
         else if (backName.Contains("night"))
             targetColor = new Color(0.4f, 0f, 0.5f); // deep purple
 
-        // Ground
+        //모든 그라운드 색상 전환
         GameObject[] targetsGround = GameObject.FindGameObjectsWithTag("Ground");
         foreach (var obj in targetsGround)
             StartCoroutine(LerpColor(obj, targetColor, colorTime));
 
-        // Enemy
+        //모든 적 색상 전환
         GameObject[] targetsEnemy = GameObject.FindGameObjectsWithTag("Dead");
         foreach (var obj in targetsEnemy)
             StartCoroutine(LerpColor(obj, targetColor, colorTime));
 
-        //Grass
+        //배경2 색상 전환
         GameObject targetGrass = GameObject.FindGameObjectWithTag("Grass");
         StartCoroutine(LerpColor(targetGrass, targetColor, colorTime));
 
@@ -129,7 +129,6 @@ public class ShiftController : MonoBehaviour
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         renderer.material.color = targetColor;
     }
 

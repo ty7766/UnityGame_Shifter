@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BackController : MonoBehaviour
 {
-    public GameObject[] backGroundPrefab;   // 배경 프리팹
+    public GameObject[] backGroundPrefab;   // 배경 프리팹 순서
     private int currentIndex = 0;           // 현재 배경 인덱스
     private GameObject currentBackGround;
 
@@ -34,11 +34,10 @@ public class BackController : MonoBehaviour
             if (renderer != null)
             {
                 Color c = renderer.material.color;
-                c.a = 1f;
+                c.a = 1.0f;
                 renderer.material.color = c;
             }
         }
-
         return currentBackGround;
     }
 
@@ -46,6 +45,4 @@ public class BackController : MonoBehaviour
     {
         return backGroundPrefab[currentIndex].name;
     }
-
-
 }

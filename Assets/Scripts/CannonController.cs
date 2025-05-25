@@ -22,6 +22,10 @@ public class CannonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // [추가] 게임이 종료된 상태면 발사하지 않음
+        if (PlayerController.gameState == "gameend")
+            return;
+
         passedTimes += Time.deltaTime;          //발사시간 판정
 
         if (CheckLength(player.transform.position))

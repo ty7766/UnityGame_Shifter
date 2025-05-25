@@ -5,9 +5,6 @@ public class GB_SUNNY : MonoBehaviour
     private Renderer blockRenderer;
     private Collider2D blockCollider;
     public ShiftController shiftController;
-
-    private readonly string targetBack = "back_sunny";
-
     void Start()
     {
         blockRenderer = GetComponent<Renderer>();
@@ -19,7 +16,7 @@ public class GB_SUNNY : MonoBehaviour
         if (shiftController == null) return;
 
         string currentBack = shiftController.GetCurrentBackName();
-        bool isActive = (currentBack == targetBack);
+        bool isActive = (currentBack == "back_sunny");
 
         if (blockRenderer != null)
         {

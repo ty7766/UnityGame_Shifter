@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class TimeController : MonoBehaviour
 {
-
-    public bool isCountDown = true;     //카운트다운, 카운트업 선택
+    [Header("Time Control")]
+    public bool isCountDown = true;              //카운트다운, 카운트업 선택
     public float maxTime = 0;
-    public bool isTimeOver = false;     //타임 오버가 되었는지 확인
-    public float displayTime = 0;       // 표시 시간
+    public bool isTimeOver = false;             //타임 오버가 되었는지 확인
+    public float displayTime = 0;               // 표시 시간
 
     private float currentTimes = 0;            //현재 시간
 
