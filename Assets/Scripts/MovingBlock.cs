@@ -38,7 +38,6 @@ public class MovingBlock : MonoBehaviour
             //배경이 "노을"이면 블록 멈춤
             if (back == "back_sunset")
                 isStopped = true;
-
             //배경이 "밤"이면 블록 상호작용 해제 & 투명화
             else if (back == "back_night")
             {
@@ -49,6 +48,7 @@ public class MovingBlock : MonoBehaviour
             {
                 spriteRenderer.enabled = true;
                 colliderBlock.enabled = true; 
+                isStopped = false;
             }
 
         }
@@ -79,10 +79,14 @@ public class MovingBlock : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            direction = (direction == "right") ? "left" : "right";
+        }
+
         if (collision.gameObject.CompareTag("Player"))
         {
             playerOnTop = collision.gameObject;
-
             // 플레이어 크기 강제 고정
             playerOnTop.transform.localScale = new Vector3(0.8f, 0.8f, 1f);
         }

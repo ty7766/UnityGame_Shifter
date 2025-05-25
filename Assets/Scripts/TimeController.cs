@@ -49,7 +49,7 @@ public class TimeController : MonoBehaviour
                     isTimeOver = true;
                 }
             }
-            Debug.Log("TIME : " + displayTime);     //디버깅 출력
+            //Debug.Log("TIME : " + displayTime);     //디버깅 출력
         }
     }
 }

@@ -11,13 +11,19 @@ public class EnemyController : MonoBehaviour
 
     [Header("연결 스크립트")]
     public ShiftController shiftController;     //배경 색상에 따른 적 제어
-        
+
+    private Rigidbody2D rbody;          // Rigidbody2D 캐시
+    private Animator animator;          // Animator 캐시
+
     void Start()
     {
         //방향 초기화
         SetDirection(direction);
         //시작위치 초기화
         defPos = transform.position;
+
+        rbody = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -27,19 +33,15 @@ public class EnemyController : MonoBehaviour
         {
             string back = shiftController.GetCurrentBackName();
             isStopped = (back == "back_sunset");
+
         }
 
         //배경이 노을일 때 태그를 Ground로 바꾸어 플레이어가 밟아도 Dead 적용이 안되게 구현
-        if (isStopped && tag != "Ground")
-            tag = "Ground";
-        else if (!isStopped && tag != "Dead")
-            tag = "Dead";
+        tag = isStopped ? "Ground" : "Dead";
 
-        //배경이 노을일 때 애니메이션 정지
-        Animator animator = GetComponent<Animator>();
+        //애니메이션 정지
         if (animator != null)
             animator.SetBool("IsMoving", !isStopped);
-
 
         // 예를 들어 범위가 8이면 시작위치에서 왼쪽으로 4만큼, 오른쪽으로 4만큼 이동할 수 있음
         // 즉 위치가 range/2를 넘어가면 범위 끝에 도달했으므로 반대방향으로 전환시킴
@@ -56,21 +58,28 @@ public class EnemyController : MonoBehaviour
                 SetDirection(direction);
             }
         }
+
+        if (rbody != null)
+        {
+            if (isStopped)
+            {
+                rbody.linearVelocityX = 0f;
+                rbody.angularVelocity = 0f;
+                rbody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+            }
+            else
+            {
+                rbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+            }
+        }
     }
 
     //------------------- 적 속도 갱신 -----------------------
     void FixedUpdate()
     {
-
-        //속도 갱신
-        Rigidbody2D rbody = GetComponent<Rigidbody2D>();
-
         //배경이 sunset일때 적 즉시 멈추기
-        if (isStopped)
-        {
-            rbody.linearVelocityX = 0;
+        if (isStopped || rbody == null)
             return;
-        }
 
         if (direction == "left")
         {

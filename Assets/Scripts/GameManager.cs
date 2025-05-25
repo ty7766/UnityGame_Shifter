@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.Search;
+using UnityEngine.SceneManagement;
 
+//2025-5-25 1st Code Refactoring
 public class GameManager : MonoBehaviour
 {
     [Header("GameOver/Clear UI")]
@@ -31,11 +32,17 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        //Game UI Controll
+        if (SceneManager.GetActiveScene().name == "Scene1")
+        {
+            totalScore = 0;
+            Debug.Log("점수 초기화");
+        }
+
+        //Game UI Control
         Invoke("InactiveImage", 1.0f);
         panel.SetActive(false);
 
-        //Time Controll
+        //Time Control
         timeController = GetComponent<TimeController>();
         //시간 제한이 없는 경우 Time UI 숨김
         if (timeController != null)
@@ -175,5 +182,5 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("게임 종료");
         Application.Quit();
-    }
+    }      
 }
