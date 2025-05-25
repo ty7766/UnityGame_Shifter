@@ -7,6 +7,11 @@ TagManager:
   - BackGround
   - Enemy
   - Ground
+  - Dead
+  - Goal
+  - Grass
+  - ScoreItem
+  - GimmickBlock
   layers:
   - Default
   - TransparentFX
@@ -14,8 +19,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Ground
+  - Shell
   - 
   - 
   - 
