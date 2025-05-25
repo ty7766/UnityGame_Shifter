@@ -1501,6 +1501,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 669277609478699033, guid: d3aa7eadc6b7a5e40b5205870888dcf8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -4.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 669277609478699033, guid: d3aa7eadc6b7a5e40b5205870888dcf8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.0000076294
+      objectReference: {fileID: 0}
     - target: {fileID: 1180948566181206024, guid: d3aa7eadc6b7a5e40b5205870888dcf8, type: 3}
       propertyPath: m_UiScaleMode
       value: 1
