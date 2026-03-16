@@ -40,12 +40,10 @@ public class PlayerController : MonoBehaviour
 
         if (axisH > 0.0f)
         {
-            Debug.Log("오른쪽 이동 눌림");
             transform.localScale = new Vector3(0.8f, 0.8f, 0);
         }
         else if (axisH < 0.0f)
         {
-            Debug.Log("왼쪽 이동 눌림");
             transform.localScale = new Vector3(-0.8f, 0.8f, 0);
         }
         if (Input.GetButtonDown("Jump"))
@@ -75,7 +73,6 @@ public class PlayerController : MonoBehaviour
         //지면 위에서 점프키가 눌렸을 때
         if(onGround && goJump)
         {
-            Debug.Log("점프 중");
             Vector2 jumpPw = new Vector2(0, jump);       //점프 벡터 생성
             rbody.AddForce(jumpPw, ForceMode2D.Impulse); //순간 힘으로 jmpPw만큼 추가 이동
             goJump = false;
@@ -109,7 +106,6 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isGoal", true);
         gameState = "gameclear";
         GameStop();
-        Debug.Log("플레이어 상태 : gameclear");
     }
 
     public void GameOver()
@@ -117,7 +113,6 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isOver", true);
         gameState = "gameover";
         GameStop();
-        Debug.Log("플레이어 상태 : gameover");
 
         //게임 오버 연출
         GetComponent<CapsuleCollider2D>().enabled = false;      //플레이어 충돌 비활성
