@@ -1,7 +1,6 @@
-using System.Collections;
 using UnityEngine;
 
-public class GB_SUNNY : MonoBehaviour
+public class GimmickBlock : MonoBehaviour
 {
     private Renderer blockRenderer;
     private Collider2D blockCollider;
@@ -12,12 +11,12 @@ public class GB_SUNNY : MonoBehaviour
         blockCollider = GetComponent<Collider2D>();
     }
 
+    // Update is called once per frame
     void Update()
     {
         if (shiftController == null) return;
-
         string currentBack = shiftController.GetCurrentBackName();
-        bool isActive = (currentBack == "back_sunny");
+        bool isActive = (currentBack == "back_sunset");
 
         if (blockRenderer != null)
         {
@@ -25,8 +24,5 @@ public class GB_SUNNY : MonoBehaviour
             color.a = isActive ? 1f : 0.3f;
             blockRenderer.material.color = color;
         }
-
-        if (blockCollider != null)
-            blockCollider.enabled = isActive;
     }
 }

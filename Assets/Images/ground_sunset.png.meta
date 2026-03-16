@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ground_sunset_0: 8350257709493441538
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

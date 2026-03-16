@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      back_night_0: 3490356745850564693
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
